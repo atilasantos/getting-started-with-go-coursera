@@ -14,6 +14,11 @@ type Person struct {
 
 func main() {
 
+	const (
+		FIRSTNAME = iota
+		LASTNAME
+	)
+
 	var people []Person
 	var openedFile string
 
@@ -28,7 +33,7 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		names := strings.Split(scanner.Text(), " ")
-		person := Person{fname: names[0], lname: names[1]}
+		person := Person{fname: names[FIRSTNAME], lname: names[LASTNAME]}
 		people = append(people, person)
 	}
 
