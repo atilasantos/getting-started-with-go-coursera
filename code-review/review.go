@@ -2,26 +2,39 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
+	"log"
 	"os"
+	"strings"
 )
 
+type Person struct {
+	fname string
+	lname string
+}
+
 func main() {
-	var fname string
-	var address string
-	fmt.Println("Please enter name!!")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan() // use `for scanner.Scan()` to keep reading
-	fname = scanner.Text()
-	fmt.Println("Please enter address!!")
-	scanner1 := bufio.NewScanner(os.Stdin)
-	scanner1.Scan() // use `for scanner.Scan()` to keep reading
-	address = scanner1.Text()
-	jobj := make(map[string]string)
-	jobj["name"] = fname
-	jobj["address"] = address
-	barr, err := json.Marshal(jobj)
-	_ = err
-	os.Stdout.Write(barr)
+	var filename string
+	fmt.Scan(&filename)
+
+	f, err := os.Open(filename)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	personSlice := make([]Person, 0, 5)
+
+	for scanner.Scan() {
+
+		person := strings.Split(scanner.Text(), " ")
+		personSlice = append(personSlice, Person{fname: person[0], lname: person[1]})
+	}
+
+	for _, itm := range personSlice {
+		fmt.Printf("%s %s\n", itm.fname, itm.lname)
+	}
 }

@@ -15,8 +15,15 @@ type Person struct {
 func main() {
 
 	var people []Person
+	var openedFile string
 
-	file, _ := os.Open("person.txt")
+	fmt.Println("Enter file name: ")
+	_, err := fmt.Scan(&openedFile)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	file, _ := os.Open(openedFile)
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
